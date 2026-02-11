@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Processando...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+  background: black;
+  color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: monospace;
+  overflow: hidden;
+}
+
+#inicio {
+  font-size: 22px;
+  color: white;
+}
+
+#susto {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: black;
+  animation: tremer 0.12s infinite;
+}
+
+#susto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#hack {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#hack h1 {
+  font-size: 36px;
+  margin: 0;
+}
+
+#hack h2 {
+  margin: 10px 0;
+  color: #ff4444;
+}
+
+#info {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #0f0;
+}
+
+#contador {
+  margin-top: 20px;
+  font-size: 28px;
+  color: red;
+}
+
+#alivio {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: black;
+  color: #0f0;
+  font-size: 26px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+@keyframes tremer {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(4px,-4px); }
+  50% { transform: translate(-4px,4px); }
+  75% { transform: translate(4px,4px); }
+  100% { transform: translate(-4px,-4px); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="inicio">Clique para continuar…</div>
+
+<div id="susto">
+  <img src="https://i.imgur.com/8Km9tLL.jpg">
+
+  <div id="hack">
+    <h1>⚠️ VOCÊ ACABA DE SER HACKEADO ⚠️</h1>
+    <h2>por JP 😈</h2>
+
+    <div id="info">
+      IP detectado: <span id="ip"></span><br>
+      Acesso remoto estabelecido…<br>
+      Extraindo dados…
+    </div>
+
+    <div id="contador">10</div>
+  </div>
+
+  <audio id="audio">
+    <source src="https://www.myinstants.com/media/sounds/jumpscare.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<div id="alivio">
+  😂 RELAXA 😂<br><br>
+  Isso foi só uma brincadeira.<br>
+  Nenhum dado foi roubado.
+</div>
+
+<script>
+let clicou = false;
+
+function gerarIP() {
+  return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+}
+
+document.body.onclick = () => {
+  if (clicou) return;
+  clicou = true;
+
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("susto").style.display = "block";
+  document.getElementById("ip").innerText = gerarIP();
+
+  const audio = document.getElementById("audio");
+  audio.play().catch(()=>{});
+
+  let tempo = 10;
+  const contador = document.getElementById("contador");
+
+  const loop = setInterval(() => {
+    tempo--;
+    contador.innerText = tempo;
+    if (tempo <= 0) {
+      clearInterval(loop);
+      setTimeout(() => {
+        document.getElementById("susto").style.display = "none";
+        document.getElementById("alivio").style.display = "flex";
+      }, 600);
+    }
+  }, 1000);
+};
+</script>
+
+</body>
+</html>
